@@ -1,7 +1,8 @@
 const type = {
   base: 'Avenir-Book',
   bold: 'Avenir-Black',
-  emphasis: 'HelveticaNeue-Italic'
+  emphasis: 'HelveticaNeue-Italic',
+  title: 'Pacifico-Regular'
 }
 
 const size = {
@@ -10,7 +11,7 @@ const size = {
   h3: 30,
   h4: 26,
   h5: 20,
-  h6: 19,
+  h6: 16,
   input: 18,
   regular: 17,
   medium: 14,
@@ -20,10 +21,11 @@ const size = {
 
 const style = {
   h1: {
-    fontFamily: type.base,
+    fontFamily: type.title,
     fontSize: size.h1
   },
   h2: {
+    fontFamily: type.title,
     fontWeight: 'bold',
     fontSize: size.h2
   },
@@ -36,7 +38,7 @@ const style = {
     fontSize: size.h4
   },
   h5: {
-    fontFamily: type.base,
+    fontFamily: type.bold,
     fontSize: size.h5
   },
   h6: {

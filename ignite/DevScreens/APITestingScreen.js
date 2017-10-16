@@ -14,6 +14,7 @@ import styles from './Styles/APITestingScreenStyles'
 const endpoints = [
   { label: 'Github Root', endpoint: 'getRoot' },
   { label: 'Github Rate Limit', endpoint: 'getRate' },
+  { label: 'Matchups', endpoint: 'getMatchups' },
   { label: 'Search User (gantman)', endpoint: 'getUser', args: ['gantman'] },
   { label: 'Search User (skellock)', endpoint: 'getUser', args: ['skellock'] }
 ]
@@ -33,7 +34,7 @@ export default class APITestingScreen extends React.Component {
   showResult (response, title = 'Response') {
     this.refs.container.scrollTo({x: 0, y: 0, animated: true})
     if (response.ok) {
-      this.refs.result.setState({message: FJSON.plain(response.data), title: title})
+      this.refs.result.setState({message: JSON.stringify(response.data), title: title})
     } else {
       this.refs.result.setState({message: `${response.problem} - ${response.status}`, title: title})
     }

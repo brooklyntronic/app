@@ -1,7 +1,13 @@
 // leave off @2x/@3x
 const images = {
-  logo: require('../Images/ir.png'),
+  logo: require('../Images/matchupmatch.png'),
   clearLogo: require('../Images/top_logo.png'),
+  circleLogo: require('../Images/logo-circle.png'),
+  vote: require('../Images/Icons/vote.png'),
+  chat: require('../Images/Icons/chat.png'),
+  match: require('../Images/Icons/match.png'),
+  profile: require('../Images/Icons/profile.png'),
+  preferences: require('../Images/Icons/preferences.png'),
   launch: require('../Images/launch-icon.png'),
   ready: require('../Images/your-app.png'),
   ignite: require('../Images/ignite_logo.png'),
@@ -19,7 +25,10 @@ const images = {
   chevronRight: require('../Images/Icons/chevron-right.png'),
   hamburger: require('../Images/Icons/hamburger.png'),
   backButton: require('../Images/Icons/back-button.png'),
-  closeButton: require('../Images/Icons/close-button.png')
+  closeButton: require('../Images/Icons/close-button.png'),
+  facebookLogin: require('../Images/Icons/facebook_circle.png'),
+  twitterLogin: require('../Images/Icons/twitter_circle.png'),
+  googleLogin: require('../Images/Icons/google_circle.png')
 }
 
 export default images
