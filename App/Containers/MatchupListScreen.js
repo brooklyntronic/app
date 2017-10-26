@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
-import { ActivityIndicator, View, Text, Dimensions, TouchableOpacity, AsyncStorage, ScrollView, ImageBackground, Image } from 'react-native'
+import { ActivityIndicator, View, Text, Dimensions, TouchableOpacity, AsyncStorage, ScrollView, ImageBackground} from 'react-native'
+import Image from 'react-native-image-progress'
 import { connect } from 'react-redux'
 import {Images, Colors} from '../Themes'
 import BackArrow from '../Components/BackArrow'
+import Addicon from '../Components/Addicon'
 import SearchBar from '../Components/SearchBar'
+import PageHeader from '../Components/PageHeader'
+import FullButton from '../Components/FullButton'
 import Icon from 'react-native-vector-icons/FontAwesome'
 // Styles
 import styles from './Styles/MatchupListScreenStyle'
-import * as Animatable from 'react-native-animatable'
 import Swiper from 'react-native-swiper'
 import Utilities from '../Services/Utilities'
 class MatchupListScreen extends Component {
@@ -15,7 +18,7 @@ class MatchupListScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true, matchups: [], sideVotes: []
+      matchups: [], sideVotes: [], context: 'matchups'
     }
   }
   getVotes () {
@@ -33,25 +36,24 @@ class MatchupListScreen extends Component {
       });
       return result ? result.vote : false
     }
-  componentWillMount() {
-    return fetch(Utilities.baseUrl + 'matchups', {credentials: 'include'})
+  componentDidMount() {
+    this.getMatchups('matchups')
+  }
+  getMatchups (context) {
+    this.setState(Object.assign({}, this.state, {isLoading: true, context: context}))
+    return fetch(Utilities.baseUrl + context, {credentials: 'include'})
     .then((response) => response.json())
     .then((responseJson) => {
-      this.setState({matchups: responseJson, isLoading: false});this.getVotes()
-    }).done()
+      this.setState(Object.assign({}, this.state, {matchups: responseJson, isLoading: false}));
+    }).then(()=>{this.getVotes()}).catch((err)=>{console.log(err)}).done()
   }
-  openMatchupScreen = (matchid, vote) => {
+  openMatchupScreen (matchid, vote){
     const voteParam = vote ? {vote: vote} : null
     this.props.navigation.navigate('MatchupScreen', {id: matchid, voteParam})
   }
-  /* ***********************************************************
-  * STEP 3
-  * `_renderRow` function -How each cell/row should be rendered
-  * It's our best practice to place a single component here:
-  *
-  * e.g.
-    return <MyCustomCell title={matchup.title} description={matchup.description} />
-  *************************************************************/
+  showMyMatchups () {
+    this.getMatchups('myMatchups')
+  }
 render() {
   var self= this
     if (this.state.isLoading) {
@@ -65,31 +67,30 @@ render() {
     }
 
     return (
-      <ScrollView style={styles.mainScroll}>
       <View style={styles.container}>
         <BackArrow onPress={() => this.props.navigation.navigate('AuthenticatedLaunchScreen')}/>
-        <View style={styles.logoContainer}><Image source={Images.circleLogo}  style={styles.smallLogo}/><Text style={styles.logoHeading}>Matchups</Text></View>
-         <TouchableOpacity style={{marginLeft: 20}} onPress={()=>this.props.navigation.navigate('MatchupCreateScreen')}><Icon name='plus-circle' size={40} color={Colors.brand}/></TouchableOpacity>
+        <Addicon onPress={()=>this.props.navigation.navigate('MatchupCreateScreen')}/>
          <View style = {styles.mainContainer}>
-
         <View style={styles.sliderWrapper}>
           <Swiper showsButtons={true} showsPagination={false}>
       {this.state.matchups.map(function(matchup, i){
         return( 
           <TouchableOpacity key={matchup._id} onPress={()=>self.openMatchupScreen(matchup.prettyUrl, self.alreadyVoted(matchup._id))} style={styles.centered} >
           <Text style={styles.title}>{matchup.title.toUpperCase()}</Text>
-          <ImageBackground  style={styles.overlayImage}   source={{uri:'https://d23grucy15vpbj.cloudfront.net/merged/' + matchup.mergedImage}}>
+          <Image  style={styles.overlayImage}   source={{uri:'https://d23grucy15vpbj.cloudfront.net/merged/' + matchup.mergedImage}}>
           {self.alreadyVoted(matchup._id)? <View style={styles.overlay}><Text style={styles.overlayText}>Already Voted {matchup.sides[self.alreadyVoted(matchup._id) - 1].name}</Text></View> : null}
-          </ImageBackground>
+          </Image>
           </TouchableOpacity>
           )
       })
     }
     </Swiper>
     </View>
+
     </View>
+    <View style={styles.formContainer}>
+    <FullButton text={this.state.context === 'matchups'?'Go To My Matchups': 'Go To Public Matchups'} onPress={()=>{this.showMyMatchups()}}/></View>
       </View>
-      </ScrollView>
       
     );
   }

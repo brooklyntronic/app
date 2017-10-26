@@ -87,7 +87,6 @@ class PreferenceScreen extends Component {
     return (
       <ScrollView contentContainerStyle={styles.mainScroll}>
       <View style={styles.container}>
-      <PageHeader text='Preferences'/>
       <Text style={styles.attr}>{this.state.property.label}</Text>
       <View style={styles.formContainer}>
       {this.state.isText ?

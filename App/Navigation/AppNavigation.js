@@ -1,4 +1,10 @@
 import { StackNavigator } from 'react-navigation'
+import React from 'react'
+import NewVideoChatContainer from '../Containers/NewVideoChatContainer'
+import PhoneCallScreen from '../Containers/PhoneCallScreen'
+import SocketChatScreen from '../Containers/SocketChatScreen'
+import VideoChatScreen from '../Containers/VideoChatScreen'
+import ChatScreen from '../Containers/ChatScreen'
 import MapPreferenceScreen from '../Containers/MapPreferenceScreen'
 import MatchupCreateScreen from '../Containers/MatchupCreateScreen'
 import MyProfileScreen from '../Containers/MyProfileScreen'
@@ -15,11 +21,20 @@ import SignupScreen from '../Containers/SignupScreen'
 import MatchupListScreen from '../Containers/MatchupListScreen'
 import Login from '../Containers/Login'
 import LaunchScreen from '../Containers/LaunchScreen'
-
+import CustomNavbar from '../Components/CustomNavbar'
 import styles from './Styles/NavigationStyles'
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
+  NewVideoChatContainer: { screen: NewVideoChatContainer, navigationOptions: {
+        headerMode: 'none',
+      } },
+  PhoneCallScreen: { screen: PhoneCallScreen , navigationOptions: {
+        headerMode: 'none',
+      } },
+  SocketChatScreen: { screen: SocketChatScreen },
+  VideoChatScreen: { screen: VideoChatScreen },
+  ChatScreen: { screen: ChatScreen },
   MapPreferenceScreen: { screen: MapPreferenceScreen },
   MatchupCreateScreen: { screen: MatchupCreateScreen },
   MyProfileScreen: { screen: MyProfileScreen },
@@ -32,17 +47,30 @@ const PrimaryNav = StackNavigator({
   MatchupScreen: { screen: MatchupScreen },
   MatchesScreen: { screen: MatchesScreen },
   ProfileScreen: { screen: ProfileScreen },
-  SignupScreen: { screen: SignupScreen },
+  SignupScreen: { screen: SignupScreen,navigationOptions: {
+        header: null,
+      } },
   MatchupListScreen: { screen: MatchupListScreen },
   Login: { screen: Login },
   LaunchScreen: { screen: LaunchScreen }
 }, {
-  // Default config for all screens
-  headerMode: 'none',
+  headerMode: 'float',
   initialRouteName: 'SignupScreen',
   navigationOptions: {
-    headerStyle: styles.header
+    header: (props)=>{
+      return(
+        <CustomNavbar
+          answerCall={(data)=>{props.navigation.navigate('PhoneCallScreen', {id: data.caller})}}
+          searchNavigate={()=>{props.navigation.navigate('MatchesSearchScreen')}}
+          messagesNavigate={()=>{props.navigation.navigate('MessagesScreen')}}
+          matchesNavigate={()=>{props.navigation.navigate('MatchesScreen')}}
+          profileNavigate={()=>{props.navigation.navigate('MyProfileScreen')}}
+          homeNavigate={()=>{props.navigation.navigate('AuthenticatedLaunchScreen')}}
+          hangCall={()=>{props.navigation.goBack(null)}}
+        />
+        )
+    }
+
   }
 })
-
 export default PrimaryNav

@@ -10,6 +10,7 @@ import BackArrow from '../Components/BackArrow'
 // Styles
 import styles from './Styles/AuthenticatedLaunchScreenStyle'
 import Utilities from '../Services/Utilities'
+import io from 'socket.io-client';
 
 class AuthenticatedLaunchScreen extends Component {
   constructor (props) {
@@ -20,14 +21,19 @@ class AuthenticatedLaunchScreen extends Component {
   }
   componentWillMount () {
     let self = this
-    AsyncStorage.getItem('@MySuperStore:userID')
-      .then((resp)=>self.setState({userID: resp})).done()
-    const initial = Orientation.getInitialOrientation();
-    if (initial === 'PORTRAIT') {
-      this.setState({orientation: 'portrait'})
-    } else {
-      this.setState({orientation: 'landscape'})
-    }
+    AsyncStorage.multiGet(['@MySuperStore:userID', '@MySuperStore:name'])
+    .then((resp)=>{
+      const initial = Orientation.getInitialOrientation();
+      if (initial === 'PORTRAIT') {
+        this.setState(Object.assign({}, this.state, {orientation: 'portrait', userID: resp}))
+      } else {
+        this.setState(Object.assign({}, this.state, {orientation: 'landscape', userID: resp}))
+      }
+      var obj = {};
+      obj[resp[0][1]] = {name: resp[1][1], id:resp[0][1]};
+      
+    }).done()
+
   }
   componentDidMount () {
     Orientation.addOrientationListener(this._orientationDidChange);
@@ -54,54 +60,51 @@ class AuthenticatedLaunchScreen extends Component {
   openPreferences = () => {
     this.props.navigation.navigate('PreferencesScreen')
   }
-   openMessages = () => {
+  openMessages = () => {
     this.props.navigation.navigate('MessagesScreen')
   }
   signout () {
     this.setState({isLoading: true})
     self = this
 
-    AsyncStorage.multiRemove(['@MySuperStore:sideVotes', '@MySuperStore:userID','@MySuperStore:matches','@MySuperStore:name']).then(()=>{
-     fetch(Utilities.baseUrl + 'signout').then((response)=> { self.props.navigation.navigate('SignupScreen')
-   }).done()
-   })
-  }
+    AsyncStorage.multiRemove(['@MySuperStore:sideVotes', '@MySuperStore:userID','@MySuperStore:matches','@MySuperStore:name'])
+    fetch(Utilities.baseUrl + 'signout').then((resp)=> {self.props.navigation.navigate('SignupScreen')
+   }).catch((err)=>{alert('Network Error')})  
+     }
   render () {
     if (this.state.isLoading) {
-        return (
-          <View style={styles.mainContainer}>
-          <View style={styles.content}>
-          <ActivityIndicator />
-          </View>
-          </View>
-          );
-      }
+      return (
+        <View style={styles.mainContainer}>
+        <View style={styles.content}>
+        <ActivityIndicator />
+        </View>
+        </View>
+        );
+    }
     return (
       <ScrollView bounces={false}>
-        <View style={styles.container}>
-        <View style={styles.mainContainer}>
+      <View style={styles.mainContainer}>
 
-          <View style={styles.buttonsContainer}>
-            <ButtonBox onPress={this.openMatchupListScreen} style={styles.topLeftButton} text='Matchups'  image={Images.circleLogo}  />
-            <ButtonBox onPress={this.openMatchesSearch} style={styles.topRightButton} text='Find People' icon='search' iconSize={40} />
-            {this.state.orientation === 'landscape' ? <ButtonBox onPress={this.openMatches} style={styles.middleLeftButton} text='My Matches' image={Images.match}/> : null}
-          </View>
-          {this.state.orientation === 'portrait' ? <View style={styles.buttonsContainer}>
-            <ButtonBox onPress={this.openMatches} style={styles.middleLeftButton} text='My Matches' image={Images.match}/>
-            <ButtonBox onPress={this.openMessages} style={styles.middleRightButton} text='Messages' icon='envelope' iconSize={40}/>
-          </View>:null}
-          <View style={styles.buttonsContainer}>
-            {this.state.orientation === 'landscape' ?<ButtonBox onPress={this.openMessages} style={styles.middleRightButton} text='Messages' icon='envelope' iconSize={40}/>:null}
-            <ButtonBox onPress={this.openProfile} style={styles.bottomLeftButton} text='My Profile' icon='user-circle' iconSize={40}/>
-            <ButtonBox onPress={this.openPreferences} style={styles.bottomRightButton} text='Match Preferences' icon='wrench' iconSize={40} />
-          </View>
-          <TouchableOpacity style={styles.signout}>
-          <Text onPress={this.signout.bind(this)} style={styles.signoutText}>Sign Out</Text>
-        </TouchableOpacity>
-          </View>
-          </View>
-        </ScrollView>
-    )
+      <View style={styles.buttonsContainer}>
+      <ButtonBox onPress={this.openMatchupListScreen} style={styles.topLeftButton} text='Matchups'  image={Images.circleLogo}  />
+      <ButtonBox onPress={this.openMatchesSearch} style={styles.topRightButton} text='Find People' icon='search' iconSize={40} />
+      {this.state.orientation === 'landscape' ? <ButtonBox onPress={this.openMatches} style={styles.middleLeftButton} text='My Matches' image={Images.match}/> : null}
+      </View>
+      {this.state.orientation === 'portrait' ? <View style={styles.buttonsContainer}>
+      <ButtonBox onPress={this.openMatches} style={styles.middleLeftButton} text='My Matches' image={Images.match}/>
+      <ButtonBox onPress={this.openMessages} style={styles.middleRightButton} text='Messages' icon='envelope' iconSize={40}/>
+      </View>:null}
+      <View style={styles.buttonsContainer}>
+      {this.state.orientation === 'landscape' ?<ButtonBox onPress={this.openMessages} style={styles.middleRightButton} text='Messages' icon='envelope' iconSize={40}/>:null}
+      <ButtonBox onPress={this.openProfile} style={styles.bottomLeftButton} text='My Profile' icon='user-circle' iconSize={40}/>
+      <ButtonBox onPress={this.openPreferences} style={styles.bottomRightButton} text='Preferences' icon='wrench' iconSize={40} />
+      </View>
+      <TouchableOpacity style={styles.signout}>
+      <Text onPress={this.signout.bind(this)} style={styles.signoutText}>Sign Out</Text>
+      </TouchableOpacity>
+      </View>
+      </ScrollView>
+      )
   }
 }
 
@@ -114,4 +117,4 @@ const mapDispatchToProps = (dispatch) => {
   return {
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(AuthenticatedLaunchScreen)
+export default AuthenticatedLaunchScreen 

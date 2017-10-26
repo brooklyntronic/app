@@ -13,7 +13,11 @@ export default StyleSheet.create({
   padding: {
     padding: Metrics.doubleBaseMargin
   },
-
+addMatchup:{
+  position: 'absolute',
+  right: 5,
+  zIndex: 10
+},
   heading: {
   	...ApplicationStyles.screen.titleText,
   },

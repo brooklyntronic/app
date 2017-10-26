@@ -13,7 +13,7 @@ export default class BackArrow extends Component {
   render () {
     return (
         <TouchableOpacity style={styles.linkStyle} onPress={this.props.onPress}>
-          <Icon name="arrow-circle-left" size={30} style={styles.backArrow}/>
+          <Icon name="arrow-circle-left" size={40} style={styles.backArrow}/>
         </TouchableOpacity>
     )
   }

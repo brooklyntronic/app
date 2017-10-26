@@ -17,7 +17,7 @@ export default class PageHeader extends Component {
 
   render () {
     return (
-      <View style={styles.logoContainer}><Image source={Images.circleLogo}  style={styles.smallLogo}/><Text style={styles.logoHeading}>{this.props.text}</Text></View>
+      <View style={styles.pageHeader}><View style={styles.logoContainer}><Image source={Images.circleLogo}  style={styles.smallLogo}/><Text style={styles.logoHeading}>{this.props.text}</Text></View></View>
     )
   }
 }

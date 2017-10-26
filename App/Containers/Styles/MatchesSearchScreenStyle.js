@@ -22,25 +22,11 @@ export default StyleSheet.create({
   padding: {
     padding: Metrics.doubleBaseMargin
   },
-  swiperHeading: {
-	...Fonts.style.h4,
-  color: Colors.brand,
-	textAlign: 'center',
-	marginBottom: 10
-  },
   getMore: {
   	...Fonts.style.h4,
   	marginTop: Metrics.doubleBaseMargin,
   	textAlign: 'center'
   },
-  heading: {
-  	...ApplicationStyles.screen.titleText,
-  },
-  logoHeading: {
-    ...ApplicationStyles.screen.titleText,
-    marginTop: 40
-  },
-
   image: {
     ...ApplicationStyles.screen.fullImage,
     alignItems:'center',justifyContent:'flex-end', marginBottom: 20, borderRadius: 10

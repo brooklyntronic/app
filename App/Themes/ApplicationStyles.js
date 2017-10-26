@@ -12,26 +12,38 @@ const ApplicationStyles = {
       backgroundColor: Colors.snow,
       paddingBottom: Metrics.doubleBaseMargin,
       justifyContent:'center',
-        alignItems: 'center'
+      alignItems: 'center',
     },
     fullImage: {
       width: Metrics.screenWidth * .8,
       height: Metrics.screenWidth * .8,
       borderRadius: 7
     },
+    avatarImage: {
+      height: 50,
+      width: 50, 
+      borderRadius: 25
+    },
+    phone: {
+      marginRight: 5, color: 'green'
+    },
+    link: {
+      color: Colors.brand,
+      fontWeight: 'bold'
+    },
     mapImage: {
       width: Metrics.screenWidth * .8,
       height: Metrics.screenWidth * .8,
       borderRadius: 7,
       marginVertical: Metrics.baseMargin,
-      position: 'absolute'
     },
     sliderWrapper: {
       height: Metrics.screenWidth * .8 + 40
     },
     matchupSliderWrapper: {
-      height: Metrics.screenWidth * .8 + 70
+      height: Metrics.screenWidth
     },
+    matchupInput: {borderWidth: 1, borderColor: '#ccc', padding: 10, borderRadius: 5, marginVertical: 10},
     mainScroll: {
       backgroundColor: Colors.snow,
       flexGrow: 1
@@ -45,7 +57,15 @@ const ApplicationStyles = {
     },
       container: {
     flex: 1,
-    backgroundColor: Colors.background
+    backgroundColor: Colors.background,
+  },
+  phoneContainer: {
+    flex: 1,
+      backgroundColor: Colors.snow,
+      paddingBottom: Metrics.doubleBaseMargin,
+      justifyContent:'center',
+        alignItems: 'center',
+    backgroundColor: '#000'
   },
   overlayImage: {
     width: Metrics.screenWidth * .8,
@@ -77,19 +97,28 @@ const ApplicationStyles = {
      marginBottom: Metrics.doubleBaseMargin,
      width: Metrics.screenWidth * .8
    },
+   icons: {color: Colors.brand},
+   iconBox: {width:Metrics.screenWidth, flex: 1, alignSelf: 'center', flexDirection:'row', justifyContent: 'space-around', marginVertical: Metrics.baseMargin},
    heading: {
     ...Fonts.style.h5,
     color: Colors.brand,
-    marginBottom: Metrics.doubleBaseMargin,
+    marginVertical: Metrics.doubleBaseMargin,
     fontWeight: 'bold'
   },
-   logoHeading: {
+  messageHeading: {
     ...Fonts.style.h5,
     color: Colors.brand,
-    marginTop: 50
+    marginVertical: Metrics.baseMargin,
+    fontWeight: 'bold'
   },
+  matchupHeading: {
+    ...Fonts.style.h5,
+    color: Colors.brand,
+    marginVertical: Metrics.baseMargin,
+    fontWeight: 'bold'
+  },
+
     smallLogo: {
-    marginTop: Metrics.doubleSection,
     height: Metrics.images.medium,
     width: Metrics.images.medium,
     resizeMode: 'contain'

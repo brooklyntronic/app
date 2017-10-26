@@ -5,7 +5,7 @@ import Utilities from '../Services/Utilities'
 
 const { Types, Creators } = createActions({
   loggedIn: null,
-  loginAttempt: ['username', 'password'],
+  attempt: ['username', 'password'],
   loginSuccess: ['user'],
   loginFailure: null,
   checkLoggedIn: null,
@@ -39,8 +39,7 @@ export const checkLoggedIn = (state) => {
   fetch(Utilities.baseUrl + 'users/loggedIn',  {credentials: 'include'})
     .then(function (resp){ if(resp.status===200)
       { window.alert(resp)
-        return state.merge({fetching: false, loggedIn: true}
-        )
+        return state.merge({fetching: false, loggedIn: true})
     } else {
       return state.merge({fetching: false, error: resp.status})
     } })

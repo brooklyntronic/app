@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, AsyncStorage, View, ActivityIndicator, Image,Picker, TouchableOpacity, FlatList} from 'react-native'
+import { ScrollView, Text, AsyncStorage, View, ActivityIndicator, Image,Picker, TouchableOpacity, FlatList, Switch} from 'react-native'
 import { connect } from 'react-redux'
 import {Images} from '../Themes/'
 import BackArrow from '../Components/BackArrow'
@@ -32,13 +32,34 @@ class PreferencesScreen extends Component {
     fetch(Utilities.baseUrl + 'getPreferences', {credentials: 'include'})
     .then((response) => response.json())
     .then((responseJson) => {
-      this.setState({preferences: responseJson, fetching: false});
+      this.setState({preferences: responseJson, fetching: false, useLocation: responseJson.location.useLocation});
     }).done()
   }
   goToSignIn () {
     this.props.navigation.navigate('SignupScreen')
   }
-  
+  changeUseLocation(value){
+    let user = {preferredUseLocation: value}
+    this.setState(Object.assign({}, this.state,{useLocation: value}))
+    fetch(Utilities.baseUrl + 'users/editProfile',
+    {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: user,
+      })
+    }
+    ).then((resp)=>{
+      
+    }).catch((err)=>{
+      alert('Network Error')
+    })
+    
+  }
   render () {
     const self = this
     if (this.state.fetching) {
@@ -53,31 +74,38 @@ class PreferencesScreen extends Component {
     return (
       <ScrollView style style={styles.mainScroll}>
       <BackArrow onPress={() => this.props.navigation.navigate('AuthenticatedLaunchScreen')}/>
-      <View style={styles.container}>
-      <PageHeader text='Match Preferences'/>
-       <List>
-       <ListItem onPress={()=>self.showMap(self.state.preferences.location)}  title='Location'
-            subtitle={
-          <View style={styles.subtitleView}>
-            <Text style={styles.attr}>{this.state.preferences.location.value}</Text>
-          </View>
-        }></ListItem>
+      <View style={{marginTop: 40}}>
+      <View style={styles.switchContainer}>
+      <Text style={{paddingLeft: 20}}>Use Location</Text>
+      <Switch
+      style={{marginLeft: 20}}
+      onValueChange={(value) => {this.changeUseLocation(value)}}
+      value={this.state.useLocation}>
+      </Switch>
+      </View>
+      <List>
+      {this.state.useLocation ? <ListItem onPress={()=>self.showMap(self.state.preferences.location)}  title='Location'
+      subtitle={
+        <View style={styles.subtitleView}>
+        <Text style={styles.attr}>{this.state.preferences.location.value}</Text>
+        </View>
+      }></ListItem> : null}
       <FlatList
-        data={this.state.preferences.choicePreferences}
-        renderItem={( {item }, i) => (
-          <ListItem
-            onPress={()=>self.showEdit(item)}
-            title={`${item.label.toString()}`}
-            subtitle={
+      data={this.state.preferences.choicePreferences}
+      renderItem={( {item }, i) => (
+        <ListItem
+        onPress={()=>self.showEdit(item)}
+        title={`${item.label.toString()}`}
+        subtitle={
           <View style={styles.subtitleView}>
-            <Text style={styles.attr}>{item.options.find((option)=>{return option.value === item.value}).label}</Text>
+          <Text style={styles.attr}>{item.options.find((option)=>{return option.value === item.value}).label}</Text>
           </View>
         }
-          />
+        />
         )}
-        keyExtractor={item => item.label}
+      keyExtractor={item => item.label}
       />
-    </List>
+      </List>
       </View>
       </ScrollView>
       )

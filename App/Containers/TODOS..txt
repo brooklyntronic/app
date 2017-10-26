@@ -1,0 +1,7 @@
+TODOS:
+Fix Friend Requests and answer requests 
+Hook up my matchups DONE
+Make into profile pic, delete pic DONE
+charts for matchups IN PROGRESS
+fix notifications for messages and match requests IN PROGRESS
+Hang up before call

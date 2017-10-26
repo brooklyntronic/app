@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import com.facebook.react.ReactActivity;
 import com.airbnb.android.react.maps.MapsPackage;
+import com.airbnb.android.react.maps.MapsPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import com.github.yamill.orientation.OrientationPackage;

@@ -2,7 +2,7 @@
 const images = {
   logo: require('../Images/matchupmatch.png'),
   clearLogo: require('../Images/top_logo.png'),
-  circleLogo: require('../Images/logo-circle.png'),
+  circleLogo: require('../Images/Icons/logo_circle.png'),
   vote: require('../Images/Icons/vote.png'),
   chat: require('../Images/Icons/chat.png'),
   match: require('../Images/Icons/match.png'),

@@ -9,9 +9,8 @@ export default StyleSheet.create({
 	color: Colors.brand
   },
   linkStyle: {
-          position: 'absolute',
-          paddingTop: 30,
           paddingHorizontal: 5,
-          zIndex: 10
+          zIndex: 10,
+          backgroundColor: 'transparent'
         }
 })
